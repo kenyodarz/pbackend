@@ -16,7 +16,7 @@ abstract class GenericRestController<T, ID : Serializable>(val serviceAPI: Gener
     fun validar(result: BindingResult): ResponseEntity<*> {
         val errors: MutableMap<String, Any> = HashMap()
         result.fieldErrors.forEach(Consumer { err: FieldError ->
-            errors[err.field] = "El Campo ${err.field} ${err.defaultMessage}"
+            errors[err.field] = "El campo ${err.field} ${err.defaultMessage}"
         })
         return ResponseEntity.badRequest().body<Map<String, Any>>(errors)
     }
@@ -39,8 +39,10 @@ abstract class GenericRestController<T, ID : Serializable>(val serviceAPI: Gener
     @PostMapping("/save")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     fun save(@Valid @RequestBody entity: T, result: BindingResult): ResponseEntity<*> {
-        if (result.hasErrors()) validar(result)
-        return ResponseEntity.status(HttpStatus.CREATED).body(serviceAPI.save(entity))
+        return when {
+            result.hasErrors() -> { validar(result) }
+            else -> ResponseEntity.status(HttpStatus.OK).body(serviceAPI.save(entity))
+        }
     }
 
     @GetMapping("/delete/{id}")
