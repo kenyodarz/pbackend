@@ -3,19 +3,21 @@ package com.cdmtransformadores.produccion.security
 import com.cdmtransformadores.produccion.security.keys.AuthEntryPointJwt
 import com.cdmtransformadores.produccion.security.keys.AuthTokenFilter
 import com.cdmtransformadores.produccion.security.services.UserDetailsServiceImpl
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.web.builders.WebSecurity
+
 
 
 
@@ -23,11 +25,13 @@ import org.springframework.security.authentication.AuthenticationManager
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class WebSecurityConfig(
-    val unauthorizedHandle: AuthEntryPointJwt,
-    val userDetailsService: UserDetailsServiceImpl
-) :
-    WebSecurityConfigurerAdapter() {
+class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+
+    @Autowired
+    var userDetailsService: UserDetailsServiceImpl? = null
+
+    @Autowired
+    var unauthorizedHandle: AuthEntryPointJwt? = null
 
     @Bean
     fun authenticationJwtTokenFilter(): AuthTokenFilter {
@@ -45,11 +49,10 @@ class WebSecurityConfig(
         return super.authenticationManagerBean()
     }
 
-
     @Throws(Exception::class)
     override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
         authenticationManagerBuilder
-            .userDetailsService(userDetailsService)
+            .userDetailsService<UserDetailsServiceImpl>(userDetailsService)
             .passwordEncoder(passwordEncoder())
     }
 
@@ -60,9 +63,11 @@ class WebSecurityConfig(
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
             .antMatchers("/api/test/**").permitAll()
+            .antMatchers("/swagger-ui.html/**").permitAll()
+            .antMatchers("/configuration/**").permitAll()
+            .antMatchers("/swagger-resources/**").permitAll()
+            .antMatchers("/v2/api-docs").permitAll()
             .anyRequest().authenticated()
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
     }
-
-
 }

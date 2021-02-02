@@ -22,5 +22,5 @@ class SignupRequest {
     @Size(min = 6, max = 40)
     var password: String? = null
 
-    var role: Set<String>? = null
+    var roles: MutableSet<String>? = null
 }

@@ -28,11 +28,7 @@ class UserDetailsImpl(
         return username
     }
 
-    override fun isAccountNonExpired(): Boolean {
-        return true
-    }
-
-    override fun isAccountNonLocked(): Boolean {
+    override fun isEnabled(): Boolean {
         return true
     }
 
@@ -40,7 +36,11 @@ class UserDetailsImpl(
         return true
     }
 
-    override fun isEnabled(): Boolean {
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
         return true
     }
 
@@ -82,6 +82,4 @@ class UserDetailsImpl(
 
         }
     }
-
-
 }

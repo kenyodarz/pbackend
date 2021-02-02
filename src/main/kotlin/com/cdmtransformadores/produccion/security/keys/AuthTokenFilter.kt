@@ -1,6 +1,8 @@
 package com.cdmtransformadores.produccion.security.keys
 
 import com.cdmtransformadores.produccion.security.services.UserDetailsServiceImpl
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -8,12 +10,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
-import java.lang.Exception
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.jvm.Throws
 
 class AuthTokenFilter(
 
@@ -24,6 +24,8 @@ class AuthTokenFilter(
 
     @Autowired
     private val userDetailsImpl: UserDetailsServiceImpl? = null
+
+    private var logger1: Logger = LoggerFactory.getLogger(AuthTokenFilter::class.java)
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
@@ -43,7 +45,7 @@ class AuthTokenFilter(
                 SecurityContextHolder.getContext().authentication = authentication
             }
         } catch (e: Exception) {
-            logger.error("No se puede obtener la autentificación: {${e}}")
+            this.logger1.error("No se puede obtener la autentificación: {${e}}")
         }
         filterChain.doFilter(request, response)
     }

@@ -49,24 +49,22 @@ class AuthRestController {
         // Validamos los Campos
         if (result.hasErrors()) return this.validar(result)
         val authentication = authenticationManager!!.authenticate(
-            UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
-        )
+            UsernamePasswordAuthenticationToken(loginRequest.username!!, loginRequest.password!!))
         SecurityContextHolder.getContext().authentication = authentication
         val jwt = jwtUtils!!.generateJwtToken(authentication)
         val userDetails = authentication!!.principal as UserDetailsImpl
         val roles = userDetails.authorities.stream()
             .map { item: GrantedAuthority -> item.authority }
             .collect(Collectors.toList())
-        return ResponseEntity.ok(
-            JwtResponse(
-                jwt,
-                userDetails.id!!,
-                userDetails.username,
-                userDetails.name!!,
-                userDetails.email!!,
-                roles
-            )
+        return ResponseEntity.ok(JwtResponse(
+            jwt,
+            userDetails.id!!,
+            userDetails.username,
+            userDetails.name!!,
+            userDetails.email!!,
+            roles)
         )
+
     }
 
     @PostMapping("/signup")
@@ -90,33 +88,33 @@ class AuthRestController {
             signUpRequest.email!!,
             encoder!!.encode(signUpRequest.password)
         )
-        val strRoles = signUpRequest.role
+        val strRoles: MutableSet<String>? = signUpRequest.roles
         val roles: MutableSet<Role> = HashSet()
         if (strRoles == null) {
             val userRole = roleRepository!!.findByName(ERole.ROLE_USER)
-                .orElseThrow { RuntimeException("Error: Rol no Encontrado.") }
+                .orElseThrow { RuntimeException("Error: Rol user no Encontrado.") }
             roles.add(userRole)
         } else {
             strRoles.forEach { role ->
                 when (role) {
                     "admin" -> {
                         val adminRole = roleRepository!!.findByName(ERole.ROLE_ADMIN)
-                            .orElseThrow { RuntimeException("Error: Role is not found.") }
+                            .orElseThrow { RuntimeException("Error: Rol admin no Encontrado.") }
                         roles.add(adminRole)
                     }
                     "mod" -> {
                         val modRole = roleRepository!!.findByName(ERole.ROLE_MODERATOR)
-                            .orElseThrow { RuntimeException("Error: Role is not found.") }
+                            .orElseThrow { RuntimeException("Error: Rol mod no Encontrado.") }
                         roles.add(modRole)
                     }
                     "sup" -> {
                         val supRole = roleRepository!!.findByName(ERole.ROLE_SUPERVISOR)
-                            .orElseThrow { RuntimeException("Error: Role is not found.") }
+                            .orElseThrow { RuntimeException("EError: Rol sup no Encontrado.") }
                         roles.add(supRole)
                     }
                     else -> {
                         val userRole = roleRepository!!.findByName(ERole.ROLE_USER)
-                            .orElseThrow { RuntimeException("Error: Role is not found.") }
+                            .orElseThrow { RuntimeException("Error: Rol user no Encontrado.") }
                         roles.add(userRole)
                     }
                 }
