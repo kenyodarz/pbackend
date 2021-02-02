@@ -22,4 +22,28 @@ class Design {
     @Column
     @NotNull
     var fecha: LocalDate?=null
+
+    @NotNull
+    @Column
+    var kva: Int?=null
+
+    @NotNull
+    @Column
+    var fase: Int?=null
+
+    @NotNull
+    @Column
+    var peso: Int?=null
+
+    @NotNull
+    @Column
+    var cantidadAceite: Int?=null
+
+    @NotNull
+    @Column
+    var tipoAceite: String?=null
+
+    @NotBlank
+    @Column
+    var tipoTransformador: String?=null
 }
