@@ -8,8 +8,10 @@ import com.cdmtransformadores.produccion.services.apis.SectionTransformadorServi
 import com.cdmtransformadores.produccion.shared.GenericRestController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,7 +24,9 @@ class SectionTransformadorRestController(override var serviceAPI: SectionTransfo
     @Autowired
     private val sectionServiceAPI: SectionServiceAPI?=null
 
-    override fun save(entity: SectionTransformador, result: BindingResult, section: String): ResponseEntity<*> {
+    @PostMapping("/add/section")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    fun saveNewSection(entity: SectionTransformador, result: BindingResult, section: String): ResponseEntity<*> {
         if (result.hasErrors()) { super.validar(result) }
         val newSection: Section
         when(section){
