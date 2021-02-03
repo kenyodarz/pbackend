@@ -1,0 +1,6 @@
+package com.cdmtransformadores.produccion.services.apis
+
+import com.cdmtransformadores.produccion.models.SectionTransformador
+import com.cdmtransformadores.produccion.shared.GenericServiceAPI
+
+interface SectionTransformadorServiceAPI : GenericServiceAPI<SectionTransformador, Long>
