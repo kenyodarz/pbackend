@@ -91,7 +91,7 @@ class Design {
     var pesoTotal: Double? = null
 
     @Column
-    @NotBlank
+    @NotNull
     var poW: Int? = null
 
     @Column
