@@ -1,54 +1,53 @@
 package com.cdmtransformadores.produccion.models
 
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDate
 import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "transformadores")
+@Table(name = "transformadores",
+    uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("numeroSerie"))])
 class Transformador {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val numeroSerie: Long?=null
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    val numeroSerieInterno: String? = null
 
+    @Column
     @NotNull
-    @Column
-    var kva: Int?=null
-
-    @NotNull
-    @Column
-    var fase: Int?=null
-
-    @NotNull
-    @Column
-    var peso: Int?=null
-
-    @NotNull
-    @Column
-    var cantidadAceite: Int?=null
-
-    @NotBlank
-    @Column
-    var tipoAceite: String?=null
-
-    @NotBlank
-    @Column
-    var tipoTransformador: String?=null
+    val numeroSerie: Long? = null
 
     @Column
-    var fecha: LocalDate?=null
+    var kva: Int? = null
 
-    @NotNull
     @Column
-    var nominalPosition: Int?=null
+    var fase: Int? = null
+
+    @Column
+    var peso: Int? = null
+
+    @Column
+    var cantidadAceite: Int? = null
+
+    @Column
+    var tipoAceite: String? = null
+
+    @Column
+    var tipoTransformador: String? = null
+
+    @Column
+    var fecha: LocalDate? = null
+
+    @Column
+    var nominalPosition: Int? = null
 
     @OneToOne
     @NotNull
-    var design: Design?=null
+    var modelo: Modelo? = null
 
     @Column
     @CreationTimestamp
@@ -56,12 +55,19 @@ class Transformador {
     var createAt: Date? = null
 
     @Column
-    var inProduction: Boolean?=null
+    var inProduction: Boolean? = null
 
     @PrePersist
     fun prePersist() {
         Date().also { createAt = it }
         true.also { inProduction = it }
+        modelo!!.kva.also { this.kva = it }
+        modelo!!.fase.also { this.fase = it }
+        modelo!!.peso.also { this.peso = it }
+        modelo!!.cantidadAceite.also { this.cantidadAceite = it }
+        modelo!!.tipoAceite.also { this.tipoAceite = it }
+        modelo!!.tipoTransformador.also { this.tipoTransformador = it }
+        modelo!!.design!!.positionNominalConmutador.also { this.nominalPosition = it }
     }
 
 
@@ -85,7 +91,7 @@ class Transformador {
         result = 31 * result + (tipoTransformador?.hashCode() ?: 0)
         result = 31 * result + (fecha?.hashCode() ?: 0)
         result = 31 * result + (nominalPosition ?: 0)
-        result = 31 * result + (design?.hashCode() ?: 0)
+        result = 31 * result + (modelo?.hashCode() ?: 0)
         result = 31 * result + (createAt?.hashCode() ?: 0)
         result = 31 * result + (inProduction?.hashCode() ?: 0)
         return result

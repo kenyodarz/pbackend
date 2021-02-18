@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface TransformadorRepository : JpaRepository<Transformador, Long> {
+interface TransformadorRepository : JpaRepository<Transformador, String> {
 
     @Query("select t from Transformador t where t.inProduction=false")
     fun getAllByInProductionIsFalse(): List<Transformador>

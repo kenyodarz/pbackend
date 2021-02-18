@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TransformadorServiceImpl(repository: TransformadorRepository) :
-    GenericServiceImpl<Transformador, Long>(), TransformadorServiceAPI {
+    GenericServiceImpl<Transformador, String>(), TransformadorServiceAPI {
 
     private val repository: TransformadorRepository
 
@@ -21,7 +21,7 @@ class TransformadorServiceImpl(repository: TransformadorRepository) :
         return this.repository.getAllByInProductionIsFalse()
     }
 
-    override fun getRepository(): JpaRepository<Transformador, Long> {
+    override fun getRepository(): JpaRepository<Transformador, String> {
         return this.repository
     }
 }

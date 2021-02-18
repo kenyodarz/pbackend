@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @CrossOrigin(origins = ["*"], maxAge = 3600)
 @RequestMapping("/api/transformadores")
 class TransformadorRestController(override var serviceAPI: TransformadorServiceAPI):
-GenericRestController<Transformador, Long>(serviceAPI) {
+GenericRestController<Transformador, String>(serviceAPI) {
 
     @GetMapping("/terminados")
     fun findAllByInProductionIsFalse(): ResponseEntity<List<Transformador>>{
