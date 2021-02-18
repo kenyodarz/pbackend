@@ -63,7 +63,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
             .antMatchers("/api/test/**").permitAll()
-            .antMatchers("/swagger-ui.html/**").permitAll()
+            .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/configuration/**").permitAll()
             .antMatchers("/swagger-resources/**").permitAll()
             .antMatchers("/v2/api-docs").permitAll()
