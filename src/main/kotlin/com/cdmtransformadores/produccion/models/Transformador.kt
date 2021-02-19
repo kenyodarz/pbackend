@@ -15,11 +15,10 @@ class Transformador {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    val numeroSerieInterno: String? = null
+    var numeroSerieInterno: String? = null
 
     @Column
-    @NotNull
-    val numeroSerie: Long? = null
+    var numeroSerie: String? = null
 
     @Column
     var kva: Int? = null
@@ -57,17 +56,22 @@ class Transformador {
     @Column
     var inProduction: Boolean? = null
 
+    @Column
+    var cliente: String? = null
+
     @PrePersist
     fun prePersist() {
-        Date().also { createAt = it }
-        true.also { inProduction = it }
         modelo!!.kva.also { this.kva = it }
         modelo!!.fase.also { this.fase = it }
         modelo!!.peso.also { this.peso = it }
         modelo!!.cantidadAceite.also { this.cantidadAceite = it }
         modelo!!.tipoAceite.also { this.tipoAceite = it }
         modelo!!.tipoTransformador.also { this.tipoTransformador = it }
+        LocalDate.now().also { this.fecha = it }
         modelo!!.design!!.positionNominalConmutador.also { this.nominalPosition = it }
+        Date().also { createAt = it }
+        true.also { inProduction = it }
+        "CDM".also { this.cliente = it }
     }
 
 

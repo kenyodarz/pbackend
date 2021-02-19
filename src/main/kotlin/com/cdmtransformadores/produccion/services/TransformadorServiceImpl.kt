@@ -24,4 +24,8 @@ class TransformadorServiceImpl(repository: TransformadorRepository) :
     override fun getRepository(): JpaRepository<Transformador, String> {
         return this.repository
     }
+
+    override fun findMAxNumeroSerie(): Int {
+        return this.repository.findMAxNumeroSerie().orElse(0)
+    }
 }

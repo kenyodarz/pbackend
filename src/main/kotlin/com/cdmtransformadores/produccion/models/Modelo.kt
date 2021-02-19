@@ -18,15 +18,12 @@ class Modelo {
     @NotBlank
     var nombreModelo: String? = null
 
-    @NotNull
     @Column
     var kva: Int?=null
 
-    @NotNull
     @Column
     var fase: Int?=null
 
-    @NotNull
     @Column
     var peso: Int?=null
 
@@ -41,6 +38,9 @@ class Modelo {
     @NotBlank
     @Column
     var tipoTransformador: String?=null
+
+    @Column(insertable = false, updatable = false)
+    var stock: Int?=null
 
     @OneToOne
     @NotNull
