@@ -39,7 +39,7 @@ class Transformador {
     var tipoTransformador: String? = null
 
     @Column
-    var fecha: LocalDate? = null
+    var fecha: Int? = null
 
     @Column
     var nominalPosition: Int? = null
@@ -67,7 +67,7 @@ class Transformador {
         modelo!!.cantidadAceite.also { this.cantidadAceite = it }
         modelo!!.tipoAceite.also { this.tipoAceite = it }
         modelo!!.tipoTransformador.also { this.tipoTransformador = it }
-        LocalDate.now().also { this.fecha = it }
+        LocalDate.now().year.also { this.fecha = it }
         modelo!!.design!!.positionNominalConmutador.also { this.nominalPosition = it }
         Date().also { createAt = it }
         true.also { inProduction = it }
