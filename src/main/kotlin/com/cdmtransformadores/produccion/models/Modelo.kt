@@ -39,7 +39,7 @@ class Modelo {
     @Column
     var tipoTransformador: String?=null
 
-    @Column(insertable = false, updatable = false)
+    @Transient
     var stock: Int?=null
 
     @OneToOne
