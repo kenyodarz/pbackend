@@ -30,16 +30,4 @@ class ModeloRestController(override var serviceAPI: ModeloServiceAPI) :
         }
     }
 
-    @GetMapping("/find/{nombreModelo}")
-    fun findByNombreModelo(@PathVariable nombreModelo: String): ResponseEntity<*> {
-        return when (this.serviceAPI.findByNombreModelo(nombreModelo)) {
-            null -> {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Modelo no existe en la base de datos")
-            }
-            else -> {
-                ResponseEntity.ok().body(this)
-            }
-        }
-    }
-
 }

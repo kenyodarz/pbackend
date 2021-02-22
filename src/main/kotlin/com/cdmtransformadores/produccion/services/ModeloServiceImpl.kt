@@ -6,7 +6,7 @@ import com.cdmtransformadores.produccion.services.apis.ModeloServiceAPI
 import com.cdmtransformadores.produccion.shared.GenericServiceImpl
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 import javax.validation.constraints.NotNull
 
 @Service
@@ -27,10 +27,6 @@ class ModeloServiceImpl(repository: ModeloRepository) : GenericServiceImpl<Model
         return this.repository.getAllWithStock()
     }
 
-    @NotNull
-    override fun findByNombreModelo(nombreModelo: String): Modelo? {
-        return this.repository.findByNombreModelo(nombreModelo).orElse(null)
-    }
 
     @NotNull
     override fun existsByNombreModelo(nombreModelo: String): Boolean {
