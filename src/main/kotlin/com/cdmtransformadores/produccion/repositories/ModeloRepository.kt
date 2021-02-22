@@ -20,6 +20,5 @@ interface ModeloRepository : JpaRepository<Modelo, String> {
     )
     fun getAllWithStock(): List<Modelo>
 
-    @Query(value = "select m from Modelo m where m.nombreModelo=?1")
-    fun buscarModelo(nombreModelo:String): Optional<Modelo>
+    fun existsByNombreModelo(nombreModelo: String): Boolean
 }
