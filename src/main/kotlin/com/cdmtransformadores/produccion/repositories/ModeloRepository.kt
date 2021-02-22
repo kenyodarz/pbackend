@@ -3,6 +3,7 @@ package com.cdmtransformadores.produccion.repositories
 import com.cdmtransformadores.produccion.models.Modelo
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import java.util.*
 
 interface ModeloRepository : JpaRepository<Modelo, String> {
 
@@ -18,4 +19,8 @@ interface ModeloRepository : JpaRepository<Modelo, String> {
         nativeQuery = true
     )
     fun getAllWithStock(): List<Modelo>
+
+    fun findByNombreModelo(nombreModelo: String): Optional<Modelo>
+
+    fun existsByNombreModelo(nombreModelo: String): Boolean
 }

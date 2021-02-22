@@ -6,7 +6,8 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "modelos")
+@Table(name = "modelos",
+    uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("nombreModelo"))])
 class Modelo {
 
     @Id

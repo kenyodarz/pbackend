@@ -3,11 +3,10 @@ package com.cdmtransformadores.produccion.controllers
 import com.cdmtransformadores.produccion.models.Modelo
 import com.cdmtransformadores.produccion.services.apis.ModeloServiceAPI
 import com.cdmtransformadores.produccion.shared.GenericRestController
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin(origins = ["*"], maxAge = 3600)
@@ -18,6 +17,29 @@ class ModeloRestController(override var serviceAPI: ModeloServiceAPI) :
     @GetMapping("/with-stock")
     fun getAllWithStock(): ResponseEntity<List<Modelo>> {
         return ResponseEntity.ok().body(this.serviceAPI.getAllWithStock())
+    }
+
+    override fun save(entity: Modelo, result: BindingResult): ResponseEntity<*> {
+        return when {
+            result.hasErrors() -> validar(result)
+            !this.serviceAPI.existsByNombreModelo(entity.nombreModelo.toString()) -> {
+                ResponseEntity.badRequest().body("Ya existe un Modelo con ese nombre")
+            }
+            else -> ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.serviceAPI.save(entity))
+        }
+    }
+
+    @GetMapping("/find/{nombreModelo}")
+    fun findByNombreModelo(@PathVariable nombreModelo: String): ResponseEntity<*> {
+        return when (this.serviceAPI.findByNombreModelo(nombreModelo)) {
+            null -> {
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Modelo no existe en la base de datos")
+            }
+            else -> {
+                ResponseEntity.ok().body(this)
+            }
+        }
     }
 
 }
