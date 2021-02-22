@@ -29,5 +29,4 @@ class ModeloRestController(override var serviceAPI: ModeloServiceAPI) :
                 .body(this.serviceAPI.save(entity))
         }
     }
-
 }
