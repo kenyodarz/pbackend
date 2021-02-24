@@ -73,31 +73,4 @@ class Transformador {
         true.also { inProduction = it }
         "CDM".also { this.cliente = it }
     }
-
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-        if (other !is Transformador) {
-            return false
-        }
-        return numeroSerie != null && numeroSerie == other.numeroSerie
-    }
-
-    override fun hashCode(): Int {
-        var result = numeroSerie?.hashCode() ?: 0
-        result = 31 * result + (kva ?: 0)
-        result = 31 * result + (fase ?: 0)
-        result = 31 * result + (peso ?: 0)
-        result = 31 * result + (cantidadAceite ?: 0)
-        result = 31 * result + (tipoAceite?.hashCode() ?: 0)
-        result = 31 * result + (tipoTransformador?.hashCode() ?: 0)
-        result = 31 * result + (fecha?.hashCode() ?: 0)
-        result = 31 * result + (nominalPosition ?: 0)
-        result = 31 * result + (modelo?.hashCode() ?: 0)
-        result = 31 * result + (createAt?.hashCode() ?: 0)
-        result = 31 * result + (inProduction?.hashCode() ?: 0)
-        return result
-    }
 }

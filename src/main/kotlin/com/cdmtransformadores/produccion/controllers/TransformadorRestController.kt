@@ -20,11 +20,12 @@ class TransformadorRestController(override var serviceAPI: TransformadorServiceA
         return ResponseEntity.ok(serviceAPI.getAllByInProductionIsFalse())
     }
 
-    @PostMapping("/generar/{cantidad}")
+    @PostMapping("/generar/{cantidad}/{id_order_production}")
     fun generarXCantidadDeTransformadores(
         @RequestBody @Valid entity: Transformador,
         result: BindingResult,
         @PathVariable cantidad: Int,
+        @PathVariable id_order_production: String
     ): ResponseEntity<*> {
         if (result.hasErrors()) validar(result)
         val generarSerie = GenerarSerie()

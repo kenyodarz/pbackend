@@ -1,7 +1,7 @@
 package com.cdmtransformadores.produccion.models
 
-import com.cdmtransformadores.produccion.security.models.User
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.GenericGenerator
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -12,8 +12,12 @@ import javax.validation.constraints.NotNull
 class ProductionOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var idProductionOrder: Long? = null
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    var idProductionOrder: String? = null
+
+    @Column
+    var numeroOrden: String? = null
 
     @Column
     @NotBlank
@@ -33,12 +37,12 @@ class ProductionOrder {
 
     @OneToOne
     @NotNull
-    var design: Design? = null
+    var modelo: Modelo? = null
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinTable(name = "orden_de_produccion_transformadores",
         joinColumns = [JoinColumn(name = "id_production_order")],
-        inverseJoinColumns = [JoinColumn(name = "numero_serie")]
+        inverseJoinColumns = [JoinColumn(name = "numero_serie_interno")]
     )
     val transformadores: MutableSet<Transformador> = HashSet()
 
