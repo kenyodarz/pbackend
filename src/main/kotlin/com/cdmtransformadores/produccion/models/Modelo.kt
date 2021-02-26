@@ -40,7 +40,7 @@ class Modelo {
     @Column
     var tipoTransformador: String?=null
 
-    @Transient
+    @Column(updatable = false, insertable = false)
     var stock: Int?=null
 
     @OneToOne
