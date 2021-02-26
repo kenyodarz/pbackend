@@ -10,9 +10,9 @@ interface ModeloRepository : JpaRepository<Modelo, String> {
     @Query(
         value = """ 
             SELECT m.id_modelo, m.cantidad_aceite, m.fase, m.kva, m.nombre_modelo, m.peso, m.tipo_aceite, m.tipo_transformador, m.design_id, 
-                count(t) AS stock
+                count(t.in_production = false OR null) AS stock
             FROM modelos m
-            JOIN transformadores t ON m.id_modelo = t.modelo_id_modelo AND t.in_production = false
+            JOIN transformadores t ON m.id_modelo = t.modelo_id_modelo 
             WHERE t.cliente = 'CDM'
             GROUP BY m.id_modelo
             """,
